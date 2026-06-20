@@ -1,0 +1,97 @@
+# =============================================================================
+# Photometric Stereo for Embroidery Digitisation
+# Configuration file for synthetic capture and processing pipeline
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Capture configuration (Unity-side parameters)
+# -----------------------------------------------------------------------------
+capture:
+  # Target sample being captured
+  sample:
+    name: "embroidery_sample_01"
+    material: "fabric_with_thread_weave"
+    physical_size_mm: [100, 100]      # approx physical size of textile sample
+    camera_distance: 1.0              # camera distance from sample (Unity units)
+
+  # Virtual camera setup (fixed for all captures)
+  camera:
+    type: "orthographic"
+    resolution: [1024, 1024]
+    field_of_view: 60.0
+    near_clip: 0.01
+    far_clip: 10.0
+
+  # Spherical lighting rig
+  lighting:
+    sphere_radius: 2.0                # radius of the lighting sphere
+    light_type: "point"
+    light_intensity: 1.0
+    light_color: [1.0, 1.0, 1.0]
+    # Parametric distribution along roll (red) and yaw (yellow) axes
+    roll_axis:
+      steps: 12                       # number of light positions around roll axis
+      angle_start_deg: 0
+      angle_end_deg: 360
+    yaw_axis:
+      steps: 6                        # number of light positions around yaw axis
+      angle_start_deg: -75
+      angle_end_deg: 75
+    # Only enable a subset of lights for each capture pass
+    enabled_indices: "all"            # "all" or list of indices, e.g. [0, 3, 6, 9]
+
+  # Output naming convention
+  output:
+    directory: "unity-capture-samples/"
+    filename_template: "capture_({x:.4f},{y:.4f},{z:.4f}).png"
+    bit_depth: 8
+    colour_mode: "grayscale"          # "grayscale" or "rgb"
+
+# -----------------------------------------------------------------------------
+# Processing configuration (Python solver-side parameters)
+# -----------------------------------------------------------------------------
+processing:
+  # Input capture set
+  input:
+    capture_folder: "unity-capture-samples/12/"
+    image_format: "png"
+    expected_resolution: [1024, 1024]
+
+  # Reflectance model
+  reflectance:
+    model: "lambertian"               # currently only lambertian is supported
+    ambient_correction: false
+    specular_threshold: null          # null disables specular pixel rejection
+
+  # Photometric stereo solve
+  solver:
+    method: "pseudo_inverse"          # least-squares pseudo-inverse
+    regularisation: 0.0               # Tikhonov regularisation parameter
+    rgb_channel_handling: "independent"  # "independent" or "luminance"
+
+  # Surface normal post-processing
+  normals:
+    normalise: true
+    output_encoding: "rgb_normal_map" # standard tangent-space normal map encoding
+    flip_y: false                     # flip Y for DirectX vs OpenGL convention
+
+# -----------------------------------------------------------------------------
+# Output configuration
+# -----------------------------------------------------------------------------
+output:
+  normal_map:
+    filename: "normal_map.png"
+    bit_depth: 8
+    colour_space: "linear"
+  intermediate:
+    save_albedo: true
+    save_per_channel_normals: false
+    save_residuals: false
+
+# -----------------------------------------------------------------------------
+# Logging and debug
+# -----------------------------------------------------------------------------
+debug:
+  verbose: false
+  save_capture_visualisations: false
+  light_direction_overlay: false
