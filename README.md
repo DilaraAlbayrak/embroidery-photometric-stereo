@@ -1,6 +1,6 @@
 # Photometric Stereo for Embroidery Digitisation
 
-A photometric stereo pipeline for 3D surface reconstruction of embroidered textiles, using synthetic captures generated in Unity under parametric spherical lighting.
+A photometric stereo pipeline for 3D surface reconstruction of embroidered textiles, using synthetic captures generated in Unity under parametric spherical lighting. This study was developed as a proof of concept exploring how computer vision techniques can support **the digitisation of textile cultural heritage**.
 
 This is an exploratory project sitting at the intersection of computer vision and textile digitisation. It was developed to investigate whether classical photometric stereo, combined with a controlled synthetic capture setup, could recover meaningful surface normals from embroidered textile samples whose three-dimensional structure (stitch height, thread weave) is difficult to capture with conventional flat scanning.
 
@@ -64,7 +64,3 @@ This is an early-stage exploratory implementation. Known limitations include:
 - The pipeline has not been validated against ground-truth geometry; results are visual rather than quantitative.
 
 Despite these limitations, the recovered normal maps preserve enough fine-scale surface detail to be visually informative for embroidery characterisation, and the modular structure (Unity capture → light parsing → solver) is straightforward to extend with more advanced reflectance models or real-world captures.
-
-## Author
-
-Dilara Albayrak
