@@ -6,7 +6,7 @@ This is an exploratory project sitting at the intersection of computer vision an
 
 ## Pipeline Overview
 
-![Pipeline diagram](assets/photometric_stereo.png)
+<img width="1543" height="678" alt="photometric stereo" src="https://github.com/user-attachments/assets/548d6894-0216-4380-a0c0-64d574751c63" />
 
 The pipeline consists of three stages:
 
